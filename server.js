@@ -3,7 +3,14 @@ const app = express();
 const path = require("path");
 
 app.use(express.json());
-app.use(express.static("public"));
+
+// 🔥 Serve os arquivos da pasta public
+app.use(express.static(path.join(__dirname, "public")));
+
+// 🔥 Rota principal (IMPORTANTE)
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 let agendamentos = [];
 
@@ -17,6 +24,6 @@ app.get("/agendamentos", (req, res) => {
   res.json(agendamentos);
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("Servidor rodando 🚀");
 });
